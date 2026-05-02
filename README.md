@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Barbería Capital — Sistema de Gestión
 
-## Getting Started
+Demo de sistema de gestión para barberías con agente IA integrado.
 
-First, run the development server:
+## Stack
+
+- **Framework:** Next.js 16 (App Router, Server Components)
+- **Base de datos:** Supabase (PostgreSQL)
+- **UI:** Shadcn UI + Tailwind CSS v4
+- **Lenguaje:** TypeScript (strict)
+- **Íconos:** Lucide + Simple Icons
+
+## Funcionalidades
+
+- **Dashboard** — Métricas en tiempo real: turnos de hoy, leads activos, conversaciones, tasa de conversión
+- **Conversaciones** — Bandeja multicanal (Instagram, WhatsApp, Messenger, TikTok) con filtrado por plataforma
+- **Agenda** — Vista semanal de turnos (Lun–Sáb) con navegación y detalle en sheet lateral
+- **Agente IA** — Configuración del bot: nombre, personalidad, tono, saludo y prompt personalizado
+- **Configuración** — Activar/desactivar conexiones a plataformas sociales con toggle optimista
+
+## Setup local
+
+### 1. Clonar e instalar
+
+```bash
+git clone <repo>
+cd gestor-barberias
+npm install
+```
+
+### 2. Variables de entorno
+
+Copiar `.env.example` a `.env.local` y completar los valores:
+
+```bash
+cp .env.example .env.local
+```
+
+| Variable | Dónde obtenerla |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Settings → API → Project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Settings → API → anon public |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API → service_role |
+
+### 3. Base de datos
+
+Ejecutar las migraciones SQL en el proyecto de Supabase y luego correr el seed de datos demo.
+
+### 4. Desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy en Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Importar el repo en [vercel.com](https://vercel.com)
+2. Agregar las 3 variables de entorno en Settings → Environment Variables
+3. Deploy automático en cada push a `main`
 
-## Learn More
+## Estructura
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/
+  dashboard/        # Métricas de negocio
+  conversaciones/   # Lista y chat individual por plataforma
+  agenda/           # Vista semanal de turnos
+  agente/           # Configuración del agente IA y prompt
+  configuracion/    # Conexiones a plataformas sociales
+components/
+  conversaciones/   # Filtros y burbujas de mensaje
+  agenda/           # Grid semanal, tarjetas y sheet de detalle
+  agente/           # Wizard y editor de prompt
+  configuracion/    # Tarjeta de conexión con toggle
+  ui/               # Componentes base (Shadcn)
+lib/
+  supabase/         # Clientes server y client
+  actions/          # Server actions (agente, agenda, configuración)
+types/
+  database.ts       # Tipos generados desde Supabase schema
+```
